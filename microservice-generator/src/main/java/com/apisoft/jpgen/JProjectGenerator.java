@@ -3,17 +3,13 @@ package com.apisoft.jpgen;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.apisoft.jpgen.part.pom.Dependency;
 import com.apisoft.jpgen.project.JPrjectFactor;
 import com.apisoft.jpgen.project.JProject;
 import com.apisoft.jpgen.project.ProjectTypes;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -108,31 +104,31 @@ public class JProjectGenerator {
 				.readValue(new FileInputStream(filePath), ProjectProperties.class);
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	private static String getDummyProperties() {
-		
-		ProjectProperties props = new ProjectProperties();
-		
-		props.setProjectName("user-service");
-		props.setPackageName("com.apisoft.user");
-		props.setProjectType("springboot-microservice");
-		props.setVersion("1.0");
-		
-		List<Dependency> dependencies = new ArrayList<>();
-		dependencies.add(new Dependency("org.springframework.boot", "spring-boot-starter-web"));
-		dependencies.add(new Dependency("org.springframework.boot", "spring-boot-starter-test"));
-		
-		props.setDependancies(dependencies);
-		
-		try {
-			return new ObjectMapper().writeValueAsString(props);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		
-		return "";
-	}
+//	/**
+//	 * 
+//	 * @return
+//	 */
+//	private static String getDummyProperties() {
+//		
+//		ProjectProperties props = new ProjectProperties();
+//		
+//		props.setProjectName("user-service");
+//		props.setPackageName("com.apisoft.user");
+//		props.setProjectType("springboot-microservice");
+//		props.setVersion("1.0");
+//		
+//		List<Dependency> dependencies = new ArrayList<>();
+//		dependencies.add(new Dependency("org.springframework.boot", "spring-boot-starter-web"));
+//		dependencies.add(new Dependency("org.springframework.boot", "spring-boot-starter-test"));
+//		
+//		props.setDependancies(dependencies);
+//		
+//		try {
+//			return new ObjectMapper().writeValueAsString(props);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return "";
+//	}
 }

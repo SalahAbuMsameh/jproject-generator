@@ -1,6 +1,9 @@
 package com.apisoft.jpgen.io;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +18,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class IOUtils {
 
 	/**
+	 * create directory(s)
 	 * 
 	 * @param dirName
 	 */
@@ -27,6 +31,7 @@ public class IOUtils {
 	}
 	
 	/**
+	 * copy file
 	 * 
 	 * @param source
 	 * @param target
@@ -40,6 +45,7 @@ public class IOUtils {
 	}
 	
 	/**
+	 * copy a directory with its all sub directories and files
 	 * 
 	 * @param source
 	 * @param targer
@@ -49,6 +55,23 @@ public class IOUtils {
 			Files.walkFileTree(source, new JProjectFileVisitor(source, target));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * write a file
+	 * 
+	 * @param className
+	 * @param content
+	 */
+	public static void writeFile(String className, String content) {
+		
+		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(className), Charset.forName("UTF-8"))) {
+			writer.write(content);
+			writer.close();
+		} 
+		catch(IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -69,22 +92,21 @@ public class IOUtils {
 			this.source = source;
 			this.target = target;
 		}
+		
+		@Override
+		public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+			
+			Path newDirectory = target.resolve(source.relativize(dir));
+			
+	        try {
+	            Files.createDirectories(newDirectory);
+	        }
+	        catch (FileAlreadyExistsException ioException){
+	            return FileVisitResult.SKIP_SUBTREE; // skip processing
+	        }
 
-//		@Override
-//		public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-//			
-//			Path newDirectory = target.resolve(source.relativize(dir));
-//			
-//	        try{
-//	            Files.copy(dir,newDirectory);
-//	        }
-//	        catch (FileAlreadyExistsException ioException){
-//	            //log it and move
-//	            return FileVisitResult.SKIP_SUBTREE; // skip processing
-//	        }
-//
-//	        return FileVisitResult.CONTINUE;
-//		}
+	        return FileVisitResult.CONTINUE;
+		}
 		
 		@Override
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

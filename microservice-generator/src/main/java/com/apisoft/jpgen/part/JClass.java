@@ -46,15 +46,15 @@ public class JClass implements JPart {
 		public ClassBuilder(String packageName, String className) {
 			this.c = new JClass(packageName, className);
 		}
-		
+
 		/**
-		 * add imports to the current class
+		 * add import to the current class
 		 * 
-		 * @param imports
+		 * @param importName
 		 * @return
 		 */
-		public ClassBuilder importLine(String importLine) {
-			this.c.getImports().add(importLine);
+		public ClassBuilder importName(String importName) {
+			this.c.getImports().add(importName);
 			return this;
 		}
 		

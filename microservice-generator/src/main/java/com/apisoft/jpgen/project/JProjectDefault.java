@@ -1,5 +1,6 @@
 package com.apisoft.jpgen.project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.apisoft.jpgen.JProjectGenException;
@@ -13,7 +14,7 @@ import com.apisoft.jpgen.part.JClass;
 public class JProjectDefault implements JProject {
 
 	protected ProjectProperties properties;
-	protected List<JClass> classes;
+	protected List<JClass> classes = new ArrayList<JClass>();
 	
 	/**
 	 * 

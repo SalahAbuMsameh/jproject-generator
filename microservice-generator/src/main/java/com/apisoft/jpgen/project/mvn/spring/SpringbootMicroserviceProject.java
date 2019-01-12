@@ -7,6 +7,8 @@ import com.apisoft.jpgen.ProjectProperties;
 import com.apisoft.jpgen.io.IOUtils;
 import com.apisoft.jpgen.part.JAnnotation;
 import com.apisoft.jpgen.part.JClass;
+import com.apisoft.jpgen.part.generator.JClassGenerator;
+import com.apisoft.jpgen.part.generator.PomFileGenerator;
 import com.apisoft.jpgen.part.pom.Dependency;
 import com.apisoft.jpgen.part.pom.Plugin;
 import com.apisoft.jpgen.part.pom.PomFile;
@@ -36,13 +38,13 @@ public class SpringbootMicroserviceProject extends MavenProject {
 	public void prepare() throws JProjectGenException {
 		
 		String projectName = properties.getProjectName();
-		defaultClassName = Utils.toClassName(projectName);
 		String packageName = properties.getPackageName();
+		defaultClassName = Utils.toClassName(projectName);
 		
 		//springboot application class
 		springbootAppClass = new JClass.ClassBuilder(packageName, defaultClassName)
-				.importLine("org.springframework.boot.SpringApplication")
-				.importLine("org.springframework.boot.autoconfigure.SpringBootApplication")
+				.importName("org.springframework.boot.SpringApplication")
+				.importName("org.springframework.boot.autoconfigure.SpringBootApplication")
 				.annotation(new JAnnotation("SpringBootApplication"))
 				.build();
 		
@@ -57,6 +59,16 @@ public class SpringbootMicroserviceProject extends MavenProject {
 				.property("java.version", properties.getJavaVersion())
 				.pomBuild(pomBuild)
 				.build();
+		
+		classes.add(new JClass.ClassBuilder(packageName + "." + "rest", defaultClassName + "RestContrller")
+				.importName("org.springframework.web.bind.annotation.RestController")
+				.annotation(new JAnnotation("RestController"))
+				.build());
+		
+		classes.add(new JClass.ClassBuilder(packageName + "." + "service", defaultClassName + "Service")
+				.importName("org.springframework.stereotype.Service")
+				.annotation(new JAnnotation("Service"))
+				.build());
 	}
 	
 	@Override
@@ -68,6 +80,23 @@ public class SpringbootMicroserviceProject extends MavenProject {
 		IOUtils.createDir(projectName);
 		
 		//2. copy maven wrapper folder
-		IOUtils.copyDir(Utils.getResourceFolderPath(".mvn"), Paths.get(projectName));
+		IOUtils.copyDir(Utils.getResourceFolderPath("spring/springboot"), Paths.get(projectName));
+		
+		//3. create main package
+		String mainSrcDirPath = new StringBuilder(projectName).append(MAIN_SOURCE).toString();
+		IOUtils.createDir(mainSrcDirPath + Utils.packageToPath(properties.getPackageName()));
+		
+		//4. write classes
+		JClassGenerator clsGen = new JClassGenerator();
+		IOUtils.writeFile(mainSrcDirPath + Utils.packageToPath(properties.getPackageName()) + "/" + springbootAppClass.getClassName() + ".java", 
+				clsGen.generate(springbootAppClass));
+		
+		classes.forEach(cls -> {
+			IOUtils.writeFile(mainSrcDirPath + Utils.packageToPath(cls.getPackageName()) + "/" + cls.getClassName() + ".java", 
+					clsGen.generate(cls));
+		});
+		
+		//5. write pom file
+		IOUtils.writeFile(projectName + "/" + "pom.xml", new PomFileGenerator().generate(pomFile));
 	}
 }

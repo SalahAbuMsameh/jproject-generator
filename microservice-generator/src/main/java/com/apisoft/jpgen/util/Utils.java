@@ -1,5 +1,6 @@
 package com.apisoft.jpgen.util;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -60,5 +61,14 @@ public class Utils {
 		} catch (URISyntaxException e) {
 			throw new JProjectGenException(e);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String packageToPath(String packageName) {
+		return packageName.replaceAll("\\.", File.pathSeparator);
 	}
 }
