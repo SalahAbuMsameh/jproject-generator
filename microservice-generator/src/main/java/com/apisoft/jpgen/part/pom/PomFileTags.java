@@ -11,6 +11,8 @@ public enum PomFileTags {
 	ARTIFACT_ID("artifactId"),
 	VERSION("version"),
 	PACKAGING("packaging"),
+	NAME("name"),
+	DESCRIPTION("description"),
 	EXCLUSIONS("exclusions"),
 	EXCLUSION("exclusion"),
 	SCOPE("scope"),

@@ -18,4 +18,12 @@ public class JProjectGenException extends Exception {
 	public JProjectGenException(String errorMsg) {
 		super(errorMsg);
 	}
+	
+	/**
+	 * 
+	 * @param cause
+	 */
+	public JProjectGenException(Exception cause) {
+		super(cause);
+	}
 }

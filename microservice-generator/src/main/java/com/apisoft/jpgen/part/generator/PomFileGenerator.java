@@ -53,8 +53,21 @@ public class PomFileGenerator implements JGenerator<PomFile> {
 		sb.append(artifactIdLine(pom.getArtifactId()));
 		sb.append(EscapeCharacters.NEW_LINE.escapeChar);
 		sb.append(versionLine(pom.getVersion()));
-		sb.append(EscapeCharacters.NEW_LINE.escapeChar);
-		sb.append(packagingLine(pom.getPackaging()));
+		
+		if(StringUtils.isNotEmpty(pom.getPackaging())) {
+			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+			sb.append(packagingLine(pom.getPackaging()));
+		}
+		
+		if(StringUtils.isNotEmpty(pom.getName())) {
+			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+			sb.append(nameLine(pom.getName()));
+		}
+		
+		if(StringUtils.isNotEmpty(pom.getDescription())) {
+			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+			sb.append(descriptionLine(pom.getDescription()));
+		}
 		
 		//4. add properties
 		Map<String, String> properties = pom.getProperties();
@@ -224,6 +237,30 @@ public class PomFileGenerator implements JGenerator<PomFile> {
 				.append(openingTag(PomFileTags.PACKAGING.tag))
 				.append(version)
 				.append(closingTag(PomFileTags.PACKAGING.tag));
+	}
+	
+	/**
+	 * 
+	 * @param version
+	 * @return
+	 */
+	private StringBuilder nameLine(String name) {
+		return new StringBuilder(EscapeCharacters.TAP.escapeChar)
+				.append(openingTag(PomFileTags.NAME.tag))
+				.append(name)
+				.append(closingTag(PomFileTags.NAME.tag));
+	}
+	
+	/**
+	 * 
+	 * @param version
+	 * @return
+	 */
+	private StringBuilder descriptionLine(String description) {
+		return new StringBuilder(EscapeCharacters.TAP.escapeChar)
+				.append(openingTag(PomFileTags.DESCRIPTION.tag))
+				.append(description)
+				.append(closingTag(PomFileTags.DESCRIPTION.tag));
 	}
 	
 	/**

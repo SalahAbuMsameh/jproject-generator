@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.apisoft.jpgen.ProjectProperties;
 import com.apisoft.jpgen.part.pom.Dependency;
+import com.apisoft.jpgen.part.pom.PomFile;
 import com.apisoft.jpgen.project.JProjectDefault;
 
 /**
@@ -13,6 +14,7 @@ import com.apisoft.jpgen.project.JProjectDefault;
 public class MavenProject extends JProjectDefault {
 
 	protected List<Dependency> dependencies;
+	protected PomFile pomFile;
 	
 	/**
 	 * 

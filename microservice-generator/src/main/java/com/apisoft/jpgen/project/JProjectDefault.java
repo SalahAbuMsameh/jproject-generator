@@ -2,6 +2,7 @@ package com.apisoft.jpgen.project;
 
 import java.util.List;
 
+import com.apisoft.jpgen.JProjectGenException;
 import com.apisoft.jpgen.ProjectProperties;
 import com.apisoft.jpgen.part.JClass;
 
@@ -23,12 +24,12 @@ public class JProjectDefault implements JProject {
 	}
 
 	@Override
-	public void prepare() {
+	public void prepare() throws JProjectGenException {
 		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
-	public void generate() {
+	public void generate() throws JProjectGenException {
 		throw new UnsupportedOperationException("not yet implemented");
 	}
 	

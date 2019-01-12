@@ -16,6 +16,18 @@ public class IOUtils {
 
 	/**
 	 * 
+	 * @param dirName
+	 */
+	public static void createDir(String dirName) {
+		try {
+			Files.createDirectories(Paths.get(dirName));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
 	 * @param source
 	 * @param target
 	 */

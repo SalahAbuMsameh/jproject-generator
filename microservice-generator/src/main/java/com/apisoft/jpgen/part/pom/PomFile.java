@@ -13,7 +13,7 @@ import com.apisoft.jpgen.part.JPart;
  * @author Salah Abu Msameh
  */
 public class PomFile extends Dependency implements JPart {
-
+	
 	private String packaging;
 	private String name;
 	private String description;
@@ -22,6 +22,16 @@ public class PomFile extends Dependency implements JPart {
 	private Map<String, String> properties = new HashMap<String, String>();
 	private List<Dependency> dependencies = new LinkedList<Dependency>();
 	private PomBuild build;
+	
+	/**
+	 * 
+	 * @param groupId
+	 * @param artifactId
+	 * @param version
+	 */
+	public PomFile(String groupId, String artifactId) {
+		super(groupId, artifactId);
+	}
 	
 	/**
 	 * 
@@ -111,6 +121,82 @@ public class PomFile extends Dependency implements JPart {
 		
 		public List<Plugin> getPlugins() {
 			return plugins;
+		}
+	}
+	
+	/**
+	 * builder class to build the pom file efficiently
+	 */
+	public static class PomFileBuilder {
+		
+		private PomFile pf;
+		
+		/**
+		 * 
+		 * @param groupId
+		 * @param artifactId
+		 * @param version
+		 */
+		public PomFileBuilder(String groupId, String artifactId) {
+			this.pf = new PomFile(groupId, artifactId);
+		}
+		
+		/**
+		 * 
+		 * @param parent
+		 * @return
+		 */
+		public PomFileBuilder parent(Dependency parent) {
+			this.pf.setParent(parent);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param packaging
+		 * @return
+		 */
+		public PomFileBuilder packaging(String packaging) {
+			this.pf.setPackaging(packaging);
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param parent
+		 * @return
+		 */
+		public PomFileBuilder version(String version) {
+			this.pf.setVersion(version);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param parent
+		 * @return
+		 */
+		public PomFileBuilder property(String propertyKey, String propertyValue) {
+			this.pf.getProperties().put(propertyKey, propertyValue);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param parent
+		 * @return
+		 */
+		public PomFileBuilder pomBuild(PomBuild pomBuild) {
+			this.pf.setBuild(pomBuild);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public PomFile build() {
+			return this.pf;
 		}
 	}
 }
