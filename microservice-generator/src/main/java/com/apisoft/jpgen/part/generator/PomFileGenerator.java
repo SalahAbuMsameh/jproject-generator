@@ -186,7 +186,7 @@ public class PomFileGenerator implements JGenerator<PomFile> {
 			sb.append(EscapeCharacters.R_TAP.escapeChar).append(closingTag(PomFileTags.BUILD.tag));
 		}
 		
-		sb.append("</project>");
+		sb.append(EscapeCharacters.NEW_LINE.escapeChar).append("</project>");
 		
 		return sb.toString();
 	}

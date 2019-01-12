@@ -41,6 +41,11 @@ public class JMethodGenerator implements JGenerator<JMethod> {
 		methodStr.append(method.getAccessType().accessType);
 		methodStr.append(SPACE);
 		
+		if(method.isStaticMethod()) {
+			methodStr.append(Keywords.STATIC.keyword);
+			methodStr.append(SPACE);
+		}
+		
 		String returnType = method.getReturnType();
 		
 		if(returnType != null) {

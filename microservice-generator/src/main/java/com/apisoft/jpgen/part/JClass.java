@@ -69,6 +69,17 @@ public class JClass implements JPart {
 		}
 		
 		/**
+		 * add a method to the current class 
+		 * 
+		 * @param method
+		 * @return
+		 */
+		public ClassBuilder method(JMethod method) {
+			this.c.getMethods().add(method);
+			return this;
+		}
+		
+		/**
 		 * 
 		 * @return
 		 */

@@ -5,8 +5,10 @@ import java.nio.file.Paths;
 import com.apisoft.jpgen.JProjectGenException;
 import com.apisoft.jpgen.ProjectProperties;
 import com.apisoft.jpgen.io.IOUtils;
+import com.apisoft.jpgen.part.AccessTypes;
 import com.apisoft.jpgen.part.JAnnotation;
 import com.apisoft.jpgen.part.JClass;
+import com.apisoft.jpgen.part.JMethod;
 import com.apisoft.jpgen.part.generator.JClassGenerator;
 import com.apisoft.jpgen.part.generator.PomFileGenerator;
 import com.apisoft.jpgen.part.pom.Dependency;
@@ -42,10 +44,15 @@ public class SpringbootMicroserviceProject extends MavenProject {
 		defaultClassName = Utils.toClassName(projectName);
 		
 		//springboot application class
-		springbootAppClass = new JClass.ClassBuilder(packageName, defaultClassName)
+		JMethod mainMethod = new JMethod(AccessTypes.PUBLIC, true, "main");
+		mainMethod.addParameter("args", "String[]");
+		mainMethod.setImplementation("		SpringApplication.run(" + defaultClassName + "Application.class, args);");
+		
+		springbootAppClass = new JClass.ClassBuilder(packageName, defaultClassName + "Application")
 				.importName("org.springframework.boot.SpringApplication")
 				.importName("org.springframework.boot.autoconfigure.SpringBootApplication")
 				.annotation(new JAnnotation("SpringBootApplication"))
+				.method(mainMethod)
 				.build();
 		
 		//spring boot parent pom
@@ -83,7 +90,7 @@ public class SpringbootMicroserviceProject extends MavenProject {
 		IOUtils.copyDir(Utils.getResourceFolderPath("spring/springboot"), Paths.get(projectName));
 		
 		//3. create main package
-		String mainSrcDirPath = new StringBuilder(projectName).append(MAIN_SOURCE).toString();
+		String mainSrcDirPath = new StringBuilder(projectName).append(MAIN_SRC).toString();
 		IOUtils.createDir(mainSrcDirPath + Utils.packageToPath(properties.getPackageName()));
 		
 		//4. write classes
@@ -92,9 +99,18 @@ public class SpringbootMicroserviceProject extends MavenProject {
 				clsGen.generate(springbootAppClass));
 		
 		classes.forEach(cls -> {
-			IOUtils.writeFile(mainSrcDirPath + Utils.packageToPath(cls.getPackageName()) + "/" + cls.getClassName() + ".java", 
+			String clsPackageName = cls.getPackageName();
+			IOUtils.createDir(mainSrcDirPath + Utils.packageToPath(clsPackageName));
+			IOUtils.writeFile(mainSrcDirPath + Utils.packageToPath(clsPackageName) + "/" + cls.getClassName() + ".java", 
 					clsGen.generate(cls));
 		});
+		
+		//5. write resources
+		String resourceDirPath = new StringBuilder(projectName).append(MAIN_SRC_RESOURCES).toString();
+		IOUtils.createDir(resourceDirPath);
+		IOUtils.createDir(resourceDirPath + "/" + "static");
+		IOUtils.createDir(resourceDirPath + "/" + "templates");
+		IOUtils.writeFile(resourceDirPath + "/" + "application.properties", "");
 		
 		//5. write pom file
 		IOUtils.writeFile(projectName + "/" + "pom.xml", new PomFileGenerator().generate(pomFile));

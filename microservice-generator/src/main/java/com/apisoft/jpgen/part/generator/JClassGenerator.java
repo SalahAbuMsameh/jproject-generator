@@ -39,7 +39,6 @@ public class JClassGenerator implements JGenerator<JClass> {
 		javaDoc.setSince(new Date());
 		sb.append(new JavaDocGenerator().generate(javaDoc)
 				.replaceAll(EscapeCharacters.R_TAP.escapeChar, EscapeCharacters.NEW_LINE.escapeChar));
-		sb.append(EscapeCharacters.NEW_LINE.escapeChar);
 		
 		//4. add annotations
 		cls.getAnnotations().forEach(ann -> {

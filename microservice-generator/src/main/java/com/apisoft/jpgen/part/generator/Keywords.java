@@ -10,7 +10,9 @@ public enum Keywords {
 	PACKAGE("package"),
 	IMPORT("import"),
 	CLASS("class"),
-	VOID("void");
+	VOID("void"),
+	STATIC("static"),
+	FINAL("final");
 	
 	public String keyword;
 

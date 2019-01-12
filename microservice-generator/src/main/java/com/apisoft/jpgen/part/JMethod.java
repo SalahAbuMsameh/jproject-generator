@@ -12,6 +12,8 @@ import java.util.Map;
 public class JMethod implements JPart {
 
 	private String methodName;
+	private boolean staticMethod;
+	private boolean finalMethod;
 	private List<JAnnotation> annotations = new ArrayList<JAnnotation>();
 	private AccessTypes accessType;
 	private String returnType;
@@ -25,7 +27,18 @@ public class JMethod implements JPart {
 	 * @param methodName
 	 */
 	public JMethod(AccessTypes accessType, String methodName) {
+		this(accessType, false, methodName);
+	}
+	
+	/**
+	 * 
+	 * @param accessType
+	 * @param staticMethod
+	 * @param methodName
+	 */
+	public JMethod(AccessTypes accessType, boolean staticMethod, String methodName) {
 		this.accessType = accessType;
+		this.staticMethod = staticMethod;
 		this.methodName = methodName;
 	}
 	
@@ -35,6 +48,18 @@ public class JMethod implements JPart {
 	
 	public void setMethodName(String methodName) {
 		this.methodName = methodName;
+	}
+	
+	public boolean isStaticMethod() {
+		return staticMethod;
+	}
+	
+	public void setFinalMethod(boolean finalMethod) {
+		this.finalMethod = finalMethod;
+	}
+	
+	public boolean isFinalMethod() {
+		return finalMethod;
 	}
 	
 	public List<JAnnotation> getAnnotations() {

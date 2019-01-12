@@ -13,8 +13,9 @@ import com.apisoft.jpgen.project.JProjectDefault;
  */
 public class MavenProject extends JProjectDefault {
 
-	protected static final String MAIN_SOURCE = "/src/main/java/";
-	protected static final String TEST_SOURCE = "/src/test/java/";
+	protected static final String MAIN_SRC = "/src/main/java/";
+	protected static final String MAIN_SRC_RESOURCES = "/src/main/resources/";
+	protected static final String TEST_SRC = "/src/test/java/";
 	
 	protected List<Dependency> dependencies;
 	protected PomFile pomFile;
