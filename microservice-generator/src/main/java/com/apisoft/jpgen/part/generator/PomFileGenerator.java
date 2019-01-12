@@ -3,12 +3,13 @@ package com.apisoft.jpgen.part.generator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.apisoft.jpgen.part.pom.Dependency;
 import com.apisoft.jpgen.part.pom.Plugin;
 import com.apisoft.jpgen.part.pom.PomFile;
 import com.apisoft.jpgen.part.pom.PomFile.PomBuild;
 import com.apisoft.jpgen.part.pom.PomFileTags;
-import com.apisoft.jpgen.util.Utils;
 
 /**
  * 
@@ -122,7 +123,7 @@ public class PomFileGenerator implements JGenerator<PomFile> {
 			
 			//add build name
 			String buildName = build.getBuildName();
-			if(Utils.isNotEmpty(buildName)) {
+			if(StringUtils.isNotEmpty(buildName)) {
 				sb.append(R_TWO_TAPS).append(openingTag(PomFileTags.BUILD_FILAL_NAME.tag))
 					.append(buildName)
 					.append(closingTag(PomFileTags.BUILD_FILAL_NAME.tag));
@@ -139,7 +140,7 @@ public class PomFileGenerator implements JGenerator<PomFile> {
 					sb.append(R_TWO_TAPS).append(EscapeCharacters.TAP.escapeChar).append(groupIdLine(plugin.getGroupId()));
 					sb.append(R_TWO_TAPS).append(EscapeCharacters.TAP.escapeChar).append(artifactIdLine(plugin.getArtifactId()));
 					
-					if(Utils.isNotEmpty(plugin.getVersion())) {
+					if(StringUtils.isNotEmpty(plugin.getVersion())) {
 						sb.append(R_TWO_TAPS).append(EscapeCharacters.TAP.escapeChar).append(versionLine(plugin.getVersion()));
 					}
 					
@@ -147,14 +148,14 @@ public class PomFileGenerator implements JGenerator<PomFile> {
 					if(conf != null) {
 						sb.append(R_TWO_TAPS).append(TWO_TAPS).append(openingTag(PomFileTags.CONFIGURATION.tag));
 							
-							if(Utils.isNotEmpty(conf.getSource())) {
+							if(StringUtils.isNotEmpty(conf.getSource())) {
 								sb.append(R_TWO_TAPS).append(TWO_TAPS).append(EscapeCharacters.TAP.escapeChar)
 									.append(openingTag(PomFileTags.SOURCE.tag))
 									.append(conf.getSource())
 									.append(closingTag(PomFileTags.SOURCE.tag));
 							}
 							
-							if(Utils.isNotEmpty(conf.getTarget())) {
+							if(org.apache.commons.lang3.StringUtils.isNotEmpty(conf.getTarget())) {
 								sb.append(R_TWO_TAPS).append(TWO_TAPS).append(EscapeCharacters.TAP.escapeChar)
 									.append(openingTag(PomFileTags.TARGET.tag))
 									.append(conf.getTarget())

@@ -3,10 +3,17 @@ package com.apisoft.jpgen.part.pom;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
 /**
  * 
  * @author Salah Abu Msameh
  */
+@JsonRootName("dependency")
+@JsonInclude(Include.NON_NULL)
 public class Dependency implements DependencyModel {
 
 	private String groupId;
@@ -14,6 +21,11 @@ public class Dependency implements DependencyModel {
 	private String version;
 	private String scope;
 	private List<Dependency> exclusions = new LinkedList<Dependency>();
+	
+	/**
+	 * 
+	 */
+	public Dependency() {}
 	
 	/**
 	 * 
@@ -49,6 +61,7 @@ public class Dependency implements DependencyModel {
 	}
 
 	@Override
+	@JsonProperty("group_id")
 	public String getGroupId() {
 		return groupId;
 	}
@@ -59,6 +72,7 @@ public class Dependency implements DependencyModel {
 	}
 	
 	@Override
+	@JsonProperty("artifact_id")
 	public String getArtifactId() {
 		return artifactId;
 	}

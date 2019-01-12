@@ -1,6 +1,9 @@
 package com.apisoft.jpgen.project;
 
+import java.util.List;
+
 import com.apisoft.jpgen.ProjectProperties;
+import com.apisoft.jpgen.part.JClass;
 
 /**
  * 
@@ -9,6 +12,7 @@ import com.apisoft.jpgen.ProjectProperties;
 public class JProjectDefault implements JProject {
 
 	protected ProjectProperties properties;
+	protected List<JClass> classes;
 	
 	/**
 	 * 
@@ -26,5 +30,13 @@ public class JProjectDefault implements JProject {
 	@Override
 	public void generate() {
 		throw new UnsupportedOperationException("not yet implemented");
+	}
+	
+	public List<JClass> getClasses() {
+		return classes;
+	}
+	
+	public void setClasses(List<JClass> classes) {
+		this.classes = classes;
 	}
 }

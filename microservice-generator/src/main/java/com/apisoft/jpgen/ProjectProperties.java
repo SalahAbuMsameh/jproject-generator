@@ -20,7 +20,7 @@ public class ProjectProperties {
 	private String springbootVersion;
 	private List<Dependency> dependancies;
 	
-	@JsonProperty("project-name")
+	@JsonProperty("project_name")
 	public String getProjectName() {
 		return projectName;
 	}
@@ -29,7 +29,7 @@ public class ProjectProperties {
 		this.projectName = projectName;
 	}
 	
-	@JsonProperty("project-type")
+	@JsonProperty("project_type")
 	public String getProjectType() {
 		return projectType;
 	}
@@ -47,6 +47,7 @@ public class ProjectProperties {
 		this.packageName = packageName;
 	}
 	
+	@JsonProperty("project_version")
 	public String getVersion() {
 		return version;
 	}
@@ -63,7 +64,7 @@ public class ProjectProperties {
 		this.packaging = packaging;
 	}
 	
-	@JsonProperty("java-version")
+	@JsonProperty("java_version")
 	public String getJavaVersion() {
 		return javaVersion;
 	}
@@ -72,7 +73,7 @@ public class ProjectProperties {
 		this.javaVersion = javaVersion;
 	}
 	
-	@JsonProperty("springboot-version")
+	@JsonProperty("springboot_version")
 	public String getSpringbootVersion() {
 		return springbootVersion;
 	}

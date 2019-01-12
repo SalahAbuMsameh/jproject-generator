@@ -1,6 +1,5 @@
 package com.apisoft.jpgen.part;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,13 +9,13 @@ import java.util.List;
  */
 public class JClass implements JPart {
 
-	private String packageName;
-	private List<String> imports = new LinkedList<String>();
 	private String className;
+	private String packageName;
 	private String parentClass;
+	
+	private List<String> imports = new LinkedList<String>();
 	private List<String> interfaces = new LinkedList<String>();
 	private List<JAnnotation> annotations = new LinkedList<JAnnotation>();
-	
 	private List<JInstanceVariable> instanceVariables = new LinkedList<JInstanceVariable>();
 	private List<JMethod> methods = new LinkedList<JMethod>();
 	
@@ -44,9 +43,8 @@ public class JClass implements JPart {
 		 * @param className
 		 * @return
 		 */
-		public ClassBuilder newClass(String packageName, String className) {
+		public ClassBuilder(String packageName, String className) {
 			this.c = new JClass(packageName, className);
-			return this;
 		}
 		
 		/**
@@ -55,8 +53,8 @@ public class JClass implements JPart {
 		 * @param imports
 		 * @return
 		 */
-		public ClassBuilder imports(List<String> imports) {
-			this.c.setImports(imports);
+		public ClassBuilder importLine(String importLine) {
+			this.c.getImports().add(importLine);
 			return this;
 		}
 		
@@ -65,19 +63,17 @@ public class JClass implements JPart {
 		 * @param importPackage
 		 * @return
 		 */
-		public ClassBuilder addImport(String importPackage) {
-			
-			List<String> imports = this.c.getImports();
-			
-			if(imports == null) {
-				imports = new ArrayList<String>();
-				this.c.setImports(imports);
-			}
-			
-			//add import
-			imports.add(importPackage);
-			
+		public ClassBuilder annotation(JAnnotation annotation) {
+			this.c.getAnnotations().add(annotation);
 			return this;
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public JClass build() {
+			return this.c;
 		}
 	}
 	
