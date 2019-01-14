@@ -3,6 +3,7 @@ package com.apisoft.jpgen;
 import java.util.List;
 
 import com.apisoft.jpgen.part.pom.Dependency;
+import com.apisoft.jpgen.part.pom.Plugin;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -19,6 +20,7 @@ public class ProjectProperties {
 	private String javaVersion;
 	private String springbootVersion;
 	private List<Dependency> dependancies;
+	private List<Plugin> plugins;
 	
 	@JsonProperty("project_name")
 	public String getProjectName() {
@@ -88,5 +90,13 @@ public class ProjectProperties {
 	
 	public void setDependancies(List<Dependency> dependancies) {
 		this.dependancies = dependancies;
+	}
+	
+	public List<Plugin> getPlugins() {
+		return plugins;
+	}
+	
+	public void setPlugins(List<Plugin> plugins) {
+		this.plugins = plugins;
 	}
 }

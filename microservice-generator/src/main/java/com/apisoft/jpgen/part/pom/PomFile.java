@@ -143,6 +143,26 @@ public class PomFile extends Dependency implements JPart {
 		
 		/**
 		 * 
+		 * @param name
+		 * @return
+		 */
+		public PomFileBuilder name(String name) {
+			this.pf.setName(name);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param description
+		 * @return
+		 */
+		public PomFileBuilder description(String description) {
+			this.pf.setDescription(description);
+			return this;
+		}
+		
+		/**
+		 * 
 		 * @param parent
 		 * @return
 		 */
@@ -178,6 +198,16 @@ public class PomFile extends Dependency implements JPart {
 		 */
 		public PomFileBuilder property(String propertyKey, String propertyValue) {
 			this.pf.getProperties().put(propertyKey, propertyValue);
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param parent
+		 * @return
+		 */
+		public PomFileBuilder dependencies(List<Dependency> dependencies) {
+			this.pf.getDependencies().addAll(dependencies);
 			return this;
 		}
 		

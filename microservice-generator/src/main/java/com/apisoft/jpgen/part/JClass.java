@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class JClass implements JPart {
 
+	private AccessTypes accessType;
+	private boolean staticClass;
+	private boolean finalClass;
 	private String className;
 	private String packageName;
 	private String parentClass;
@@ -65,6 +68,39 @@ public class JClass implements JPart {
 		 */
 		public ClassBuilder annotation(JAnnotation annotation) {
 			this.c.getAnnotations().add(annotation);
+			return this;
+		}
+		
+		/**
+		 * add extend class
+		 * 
+		 * @param parentClass
+		 * @return
+		 */
+		public ClassBuilder extend(String parentClass) {
+			this.c.setParentClass(parentClass);
+			return this;
+		}
+		
+		/**
+		 * add implement interface
+		 * 
+		 * @param interfaceName
+		 * @return
+		 */
+		public ClassBuilder implement(String interfaceName) {
+			this.c.getInterfaces().add(interfaceName);
+			return this;
+		}
+		
+		/**
+		 * add instance variable to class
+		 * 
+		 * @param iv
+		 * @return
+		 */
+		public ClassBuilder instanceVariable(JInstanceVariable iv) {
+			this.c.getInstanceVariables().add(iv);
 			return this;
 		}
 		
@@ -135,16 +171,40 @@ public class JClass implements JPart {
 	public List<JInstanceVariable> getInstanceVariables() {
 		return instanceVariables;
 	}
-
+	
 	public void setInstanceVariables(List<JInstanceVariable> instanceVariables) {
 		this.instanceVariables = instanceVariables;
 	}
-
+	
 	public List<JMethod> getMethods() {
 		return methods;
 	}
-
+	
 	public void setMethods(List<JMethod> methods) {
 		this.methods = methods;
+	}
+	
+	public AccessTypes getAccessType() {
+		return accessType;
+	}
+	
+	public void setAccessType(AccessTypes accessType) {
+		this.accessType = accessType;
+	}
+	
+	public boolean isStaticClass() {
+		return staticClass;
+	}
+	
+	public void setStaticClass(boolean staticClass) {
+		this.staticClass = staticClass;
+	}
+	
+	public boolean isFinalClass() {
+		return finalClass;
+	}
+	
+	public void setFinalClass(boolean finalClass) {
+		this.finalClass = finalClass;
 	}
 }

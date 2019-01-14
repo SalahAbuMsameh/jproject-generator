@@ -15,6 +15,7 @@ public class MavenProject extends JProjectDefault {
 
 	protected static final String MAIN_SRC = "/src/main/java/";
 	protected static final String MAIN_SRC_RESOURCES = "/src/main/resources/";
+	protected static final String MAIN_SRC_WEBAPP = "/src/main/webapp/";
 	protected static final String TEST_SRC = "/src/test/java/";
 	
 	protected List<Dependency> dependencies;
@@ -26,5 +27,16 @@ public class MavenProject extends JProjectDefault {
 	 */
 	public MavenProject(ProjectProperties properties) {
 		super(properties);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected final String getWebInfDirPath() {
+		return new StringBuilder(properties.getProjectName())
+				.append(MAIN_SRC_WEBAPP)
+				.append("/WEB-INF/")
+				.toString();
 	}
 }

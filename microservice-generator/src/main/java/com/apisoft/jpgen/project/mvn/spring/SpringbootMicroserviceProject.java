@@ -24,8 +24,8 @@ import com.apisoft.jpgen.util.Utils;
  */
 public class SpringbootMicroserviceProject extends MavenProject {
 	
-	private String defaultClassName;
-	private JClass springbootAppClass;
+	protected String defaultClassName;
+	protected JClass springbootAppClass;
 	
 	
 	/**
@@ -39,43 +39,73 @@ public class SpringbootMicroserviceProject extends MavenProject {
 	@Override
 	public void prepare() throws JProjectGenException {
 		
-		String projectName = properties.getProjectName();
-		String packageName = properties.getPackageName();
-		defaultClassName = Utils.toClassName(projectName);
+		defaultClassName = Utils.toClassName(properties.getProjectName());
 		
 		//springboot application class
+		prepareSpringbootApp();
+		
+		//spring boot parent pom
+		preparePomFile();
+		
+		//prepare classes
+		classes.add(prepareRestController());
+		classes.add(prepareServiceClass());
+	}
+	
+	/**
+	 * prepare springboot application class
+	 */
+	protected void prepareSpringbootApp() {
+		
 		JMethod mainMethod = new JMethod(AccessTypes.PUBLIC, true, "main");
 		mainMethod.addParameter("args", "String[]");
 		mainMethod.setImplementation("		SpringApplication.run(" + defaultClassName + "Application.class, args);");
 		
-		springbootAppClass = new JClass.ClassBuilder(packageName, defaultClassName + "Application")
+		springbootAppClass = new JClass.ClassBuilder(properties.getPackageName(), defaultClassName + "Application")
 				.importName("org.springframework.boot.SpringApplication")
 				.importName("org.springframework.boot.autoconfigure.SpringBootApplication")
 				.annotation(new JAnnotation("SpringBootApplication"))
 				.method(mainMethod)
 				.build();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private JClass prepareServiceClass() {
+		return new JClass.ClassBuilder(properties.getPackageName() + "." + "service", defaultClassName + "Service")
+				.importName("org.springframework.stereotype.Service")
+				.annotation(new JAnnotation("Service"))
+				.build();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	protected JClass prepareRestController() {
+		return new JClass.ClassBuilder(properties.getPackageName() + "." + "rest", defaultClassName + "RestContrller")
+				.importName("org.springframework.web.bind.annotation.RestController")
+				.annotation(new JAnnotation("RestController"))
+				.build();
+	}
+
+	/**
+	 * prepare pom file
+	 */
+	protected void preparePomFile() {
 		
-		//spring boot parent pom
 		PomBuild pomBuild = new PomBuild();
-		pomBuild.setBuildName(projectName);
+		pomBuild.setBuildName(properties.getProjectName());
 		pomBuild.getPlugins().add(new Plugin("org.springframework.boot", "spring-boot-maven-plugin"));
 
-		pomFile = new PomFile.PomFileBuilder(packageName, projectName)
+		pomFile = new PomFile.PomFileBuilder(properties.getPackageName(), properties.getProjectName())
 				.parent(new Dependency("org.springframework.boot", "spring-boot-starter-parent", properties.getSpringbootVersion()))
 				.version(properties.getVersion())
 				.property("java.version", properties.getJavaVersion())
 				.pomBuild(pomBuild)
 				.build();
-		
-		classes.add(new JClass.ClassBuilder(packageName + "." + "rest", defaultClassName + "RestContrller")
-				.importName("org.springframework.web.bind.annotation.RestController")
-				.annotation(new JAnnotation("RestController"))
-				.build());
-		
-		classes.add(new JClass.ClassBuilder(packageName + "." + "service", defaultClassName + "Service")
-				.importName("org.springframework.stereotype.Service")
-				.annotation(new JAnnotation("Service"))
-				.build());
 	}
 	
 	@Override
@@ -90,7 +120,7 @@ public class SpringbootMicroserviceProject extends MavenProject {
 		IOUtils.copyDir(Utils.getResourceFolderPath("spring/springboot"), Paths.get(projectName));
 		
 		//3. create main package
-		String mainSrcDirPath = new StringBuilder(projectName).append(MAIN_SRC).toString();
+		String mainSrcDirPath = getMainSrcDirPath();
 		IOUtils.createDir(mainSrcDirPath + Utils.packageToPath(properties.getPackageName()));
 		
 		//4. write classes
@@ -106,7 +136,8 @@ public class SpringbootMicroserviceProject extends MavenProject {
 		});
 		
 		//5. write resources
-		String resourceDirPath = new StringBuilder(projectName).append(MAIN_SRC_RESOURCES).toString();
+		String resourceDirPath = getResourcesDirPath();
+		
 		IOUtils.createDir(resourceDirPath);
 		IOUtils.createDir(resourceDirPath + "/" + "static");
 		IOUtils.createDir(resourceDirPath + "/" + "templates");
@@ -114,5 +145,23 @@ public class SpringbootMicroserviceProject extends MavenProject {
 		
 		//5. write pom file
 		IOUtils.writeFile(projectName + "/" + "pom.xml", new PomFileGenerator().generate(pomFile));
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected final String getMainSrcDirPath() {
+		return new StringBuilder(properties.getProjectName())
+				.append(MAIN_SRC)
+				.toString();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected String getResourcesDirPath() {
+		return new StringBuilder(properties.getProjectName()).append(MAIN_SRC_RESOURCES).toString();
 	}
 }

@@ -15,7 +15,6 @@ public class JAnnotationGenerator implements JGenerator<JAnnotation> {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(EscapeCharacters.R_TAP.escapeChar);
 		sb.append(AT);
 		sb.append(annotation.getAnnotationName());
 		

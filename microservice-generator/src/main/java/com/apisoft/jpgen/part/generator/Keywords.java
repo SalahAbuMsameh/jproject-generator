@@ -10,6 +10,8 @@ public enum Keywords {
 	PACKAGE("package"),
 	IMPORT("import"),
 	CLASS("class"),
+	EXTENDS("extends"),
+	IMPLEMENTS("implements"),
 	VOID("void"),
 	STATIC("static"),
 	FINAL("final");

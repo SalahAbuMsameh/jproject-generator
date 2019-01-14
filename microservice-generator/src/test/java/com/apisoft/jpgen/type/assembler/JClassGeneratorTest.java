@@ -32,6 +32,17 @@ public class JClassGeneratorTest {
 		assertTrue(clsStr.contains("package com.apisoft.test;"));
 		assertTrue(clsStr.contains("public class TestClass {}"));
 		
+		//1.1 test with extends
+		cls.setParentClass("ParentClass");
+		clsStr = clsGenerator.generate(cls);
+		assertTrue(clsStr.contains("public class TestClass extends ParentClass {}"));
+		
+		//1.2 test with extends
+		cls.getInterfaces().add("Interface1");
+		cls.getInterfaces().add("Interface2");
+		clsStr = clsGenerator.generate(cls);
+		assertTrue(clsStr.contains("public class TestClass extends ParentClass implements Interface1, Interface2 {}"));
+		
 		//2. add imports
 		cls.getImports().add("java.util.List");
 		cls.getImports().add("java.util.LinkedList");
