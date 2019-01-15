@@ -20,7 +20,10 @@ public class JMethodGenerator implements JGenerator<JMethod> {
 		JavaDoc javaDoc = new JavaDoc(method.getMethodName());
 		
 		//1. add method annotations
-		method.getAnnotations().forEach(ann -> sb.append(new JAnnotationGenerator().generate(ann)));
+		method.getAnnotations().forEach(ann -> {
+			sb.append(TAP);
+			sb.append(new JAnnotationGenerator().generate(ann));
+		});
 		
 		//2. add method declaration
 		addMethodDeclaration(method, sb, javaDoc);
