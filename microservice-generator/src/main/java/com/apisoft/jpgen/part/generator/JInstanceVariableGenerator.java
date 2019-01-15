@@ -8,7 +8,7 @@ import com.apisoft.jpgen.part.JInstanceVariable;
  * 
  * @author Salah Abu Msameh
  */
-public class InstanceVariableGenerator implements JGenerator<JInstanceVariable> {
+public class JInstanceVariableGenerator implements JGenerator<JInstanceVariable> {
 	
 	@Override
 	public String generate(JInstanceVariable iv) {

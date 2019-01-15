@@ -1,6 +1,5 @@
 package com.apisoft.jpgen.part.generator;
 
-import java.io.File;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -59,38 +58,61 @@ public class JClassGenerator implements JGenerator<JClass> {
 		//5. add class declaration line
 		sb.append(getClassDeclaration(cls.getAccessType(), cls.isStaticClass(), cls.isFinalClass(), className, 
 				cls.getParentClass(), cls.getInterfaces()));
+		sb.append(EscapeCharacters.NEW_LINE.escapeChar);
 		
 		//6. instance variables
-		List<JInstanceVariable> ivs = cls.getInstanceVariables();
-		if(!ivs.isEmpty()) {
-			
-			InstanceVariableGenerator ivGen = new InstanceVariableGenerator();
-			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
-			
-			ivs.forEach(iv -> {
-				sb.append(ivGen.generate(iv));
-				sb.append(EscapeCharacters.NEW_LINE.escapeChar);
-			});
-			
-			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
-		}
+		addInstanceVariables(sb, cls.getInstanceVariables());
 		
-		//6. add methods
-		List<JMethod> methods = cls.getMethods();
-		if(!methods.isEmpty()) {
-			
-			JMethodGenerator methodGen = new JMethodGenerator();
-			
-			methods.forEach(m -> {
-				sb.append(methodGen.generate(m));
-				sb.append(EscapeCharacters.NEW_LINE.escapeChar);
-			});
-		}
+		//7. add methods
+		addMethods(sb, cls.getMethods());
 		
-		//7. end of the class 
+		//8. end of the class 
 		sb.append(RIGHT_CURLY_BRACKET);
 		
 		return sb.toString();
+	}
+	
+	/**
+	 * Add instance variables
+	 * 
+	 * @param sb
+	 * @param ivs
+	 */
+	private void addInstanceVariables(StringBuilder sb, List<JInstanceVariable> ivs) {
+		
+		if(ivs.isEmpty()) {
+			return;
+		}
+		
+		JInstanceVariableGenerator ivGen = new JInstanceVariableGenerator();
+		
+		ivs.forEach(iv -> {
+			sb.append(ivGen.generate(iv));
+			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+		});
+		
+		sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+	}
+
+	/**
+	 * add class methods
+	 * 
+	 * @param sb
+	 * @param methods
+	 */
+	private void addMethods(StringBuilder sb, List<JMethod> methods) {
+		
+		if(methods.isEmpty()) {
+			return;
+		}
+		
+		JMethodGenerator methodGen = new JMethodGenerator();
+		
+		methods.forEach(m -> {
+			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+			sb.append(methodGen.generate(m));
+			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+		});
 	}
 
 	/**
@@ -99,7 +121,7 @@ public class JClassGenerator implements JGenerator<JClass> {
 	 * @return
 	 */
 	public String getClassFilePath(String packageName, String className) {
-		return new StringBuilder(packageName.replaceAll(".", File.pathSeparator))
+		return new StringBuilder(packageName.replaceAll(".", "/"))
 				.append(className)
 				.toString();
 	}

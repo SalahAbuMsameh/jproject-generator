@@ -25,7 +25,8 @@ public class JMethodGenerator implements JGenerator<JMethod> {
 		//2. add method declaration
 		addMethodDeclaration(method, sb, javaDoc);
 		
-		return new StringBuilder(new JavaDocGenerator().generate(javaDoc))
+		return new StringBuilder(EscapeCharacters.TAP.escapeChar)
+				.append(new JavaDocGenerator().generate(javaDoc))
 				.append(sb)
 				.toString();
 	}

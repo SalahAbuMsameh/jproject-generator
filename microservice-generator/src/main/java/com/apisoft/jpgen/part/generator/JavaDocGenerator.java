@@ -16,7 +16,7 @@ public class JavaDocGenerator implements JGenerator<JavaDoc> {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(EscapeCharacters.R_TAP.escapeChar).append("/**");
+		sb.append("/**");
 		sb.append(EscapeCharacters.R_TAP.escapeChar).append(" *").append(SPACE).append(javaDoc.getName());
 		
 		if(javaDoc.getSince() != null) {

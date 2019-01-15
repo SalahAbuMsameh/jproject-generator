@@ -22,6 +22,7 @@ public interface JGenerator<J extends JPart> {
 	static final String RIGHT_ANGLE_BRACKET = ">";
 	static final String FORWARD_SPASH = "/";
 	
+	static final String TAP = EscapeCharacters.TAP.escapeChar;
 	static final String TWO_TAPS = EscapeCharacters.TAP.escapeChar + EscapeCharacters.TAP.escapeChar;
 	static final String R_TWO_TAPS = EscapeCharacters.R_TAP.escapeChar + EscapeCharacters.TAP.escapeChar;
 	
