@@ -85,7 +85,7 @@ public class SpringbootMicroserviceProject extends MavenProject {
 	 * @return
 	 */
 	protected JClass prepareRestController() {
-		return new JClass.ClassBuilder(properties.getPackageName() + "." + "rest", defaultClassName + "RestContrller")
+		return new JClass.ClassBuilder(properties.getPackageName() + "." + "rest", defaultClassName + "RestController")
 				.importName("org.springframework.web.bind.annotation.RestController")
 				.annotation(new JAnnotation("RestController"))
 				.build();
@@ -141,12 +141,20 @@ public class SpringbootMicroserviceProject extends MavenProject {
 		IOUtils.createDir(resourceDirPath);
 		IOUtils.createDir(resourceDirPath + "/" + "static");
 		IOUtils.createDir(resourceDirPath + "/" + "templates");
-		IOUtils.writeFile(resourceDirPath + "/" + "application.properties", "");
+		IOUtils.writeFile(resourceDirPath + "/" + "application.properties", getAppPropertiesContent());
 		
 		//5. write pom file
 		IOUtils.writeFile(projectName + "/" + "pom.xml", new PomFileGenerator().generate(pomFile));
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	protected String getAppPropertiesContent() {
+		return "";
+	}
+
 	/**
 	 * 
 	 * @return

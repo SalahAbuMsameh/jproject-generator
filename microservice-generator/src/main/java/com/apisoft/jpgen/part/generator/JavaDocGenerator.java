@@ -27,7 +27,7 @@ public class JavaDocGenerator implements JGenerator<JavaDoc> {
 		}
 		
 		//end
-		sb.append(EscapeCharacters.R_TAP.escapeChar).append("/*");
+		sb.append(EscapeCharacters.R_TAP.escapeChar).append(" */");
 		
 		return sb.toString();
 	}
