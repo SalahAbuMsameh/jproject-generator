@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.apisoft.jpgen.JProjectGenException;
 import com.apisoft.jpgen.ProjectProperties;
+import com.apisoft.jpgen.io.IOUtils;
 import com.apisoft.jpgen.part.JClass;
 
 /**
@@ -40,5 +41,14 @@ public class JProjectDefault implements JProject {
 	
 	public void setClasses(List<JClass> classes) {
 		this.classes = classes;
+	}
+	
+	@Override
+	public void rollback() {
+		try {
+			IOUtils.deleteDir(properties.getProjectName());
+		} catch (JProjectGenException e) {
+			e.printStackTrace();
+		}
 	}
 }

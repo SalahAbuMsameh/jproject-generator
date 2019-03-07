@@ -19,6 +19,7 @@ public class JMethod implements JPart {
 	private String returnType;
 	private Map<String, String> parameters = new LinkedHashMap<String, String>();
 	
+	private boolean addDocs = true;
 	private String implementation = "";
 	
 	/**
@@ -100,5 +101,13 @@ public class JMethod implements JPart {
 	
 	public void setImplementation(String implementation) {
 		this.implementation = implementation;
+	}
+	
+	public boolean isAddDocs() {
+		return addDocs;
+	}
+	
+	public void setAddDocs(boolean addDocs) {
+		this.addDocs = addDocs;
 	}
 }

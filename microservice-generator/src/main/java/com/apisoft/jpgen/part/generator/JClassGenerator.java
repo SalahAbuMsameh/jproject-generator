@@ -3,6 +3,7 @@ package com.apisoft.jpgen.part.generator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -84,12 +85,12 @@ public class JClassGenerator implements JGenerator<JClass> {
 			return;
 		}
 		
+		sb.append(EscapeCharacters.NEW_LINE.escapeChar);
 		JInstanceVariableGenerator ivGen = new JInstanceVariableGenerator();
 		
-		ivs.forEach(iv -> {
-			sb.append(ivGen.generate(iv));
-			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
-		});
+		sb.append(ivs.stream()
+			.map(iv -> ivGen.generate(iv))
+			.collect(Collectors.joining(EscapeCharacters.NEW_LINE.escapeChar + EscapeCharacters.NEW_LINE.escapeChar)));
 		
 		sb.append(EscapeCharacters.NEW_LINE.escapeChar);
 	}

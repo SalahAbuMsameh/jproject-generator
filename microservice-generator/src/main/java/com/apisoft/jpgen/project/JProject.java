@@ -17,4 +17,9 @@ public interface JProject {
 	 * Generates project
 	 */
 	public void generate() throws JProjectGenException;
+	
+	/**
+	 * Rollback the created files & folders in case not completed successfully
+	 */
+	public void rollback();
 }

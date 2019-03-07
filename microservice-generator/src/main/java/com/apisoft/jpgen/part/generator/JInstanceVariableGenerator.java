@@ -16,14 +16,13 @@ public class JInstanceVariableGenerator implements JGenerator<JInstanceVariable>
 		StringBuilder sb = new StringBuilder();
 		
 		//add annotations
-		if(!iv.getAnnotations().isEmpty()) {
-			iv.getAnnotations().forEach(ann -> {
-				sb.append(EscapeCharacters.TAP.escapeChar);
-				sb.append(new JAnnotationGenerator().generate(ann));
-			});
-		}
+		iv.getAnnotations().forEach(ann -> {
+			sb.append(EscapeCharacters.TAP.escapeChar);
+			sb.append(new JAnnotationGenerator().generate(ann));
+			sb.append(EscapeCharacters.NEW_LINE.escapeChar);
+		});
 		
-		sb.append(EscapeCharacters.R_TAP.escapeChar);
+		sb.append(EscapeCharacters.TAP.escapeChar);
 		sb.append(iv.getAccessType());
 		sb.append(SPACE);
 		

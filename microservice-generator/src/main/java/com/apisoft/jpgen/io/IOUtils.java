@@ -1,7 +1,9 @@
 package com.apisoft.jpgen.io;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
@@ -9,24 +11,47 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Comparator;
+
+import com.apisoft.jpgen.JProjectGenException;
 
 /**
  * 
  * @author Salah Abu Msameh
  */
 public class IOUtils {
-
+	
 	/**
 	 * create directory(s)
 	 * 
 	 * @param dirName
+	 * @throws JProjectGenException 
 	 */
-	public static void createDir(String dirName) {
+	public static void createDir(String dirName) throws JProjectGenException {
 		try {
 			Files.createDirectories(Paths.get(dirName));
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new JProjectGenException(e);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param dirName
+	 * @throws JProjectGenException
+	 */
+	public static void deleteDir(String dirName) throws JProjectGenException {
+		
+		try {
+			Files.walk(Paths.get(dirName))
+				.sorted(Comparator.reverseOrder())
+				.map(Path::toFile)
+				.forEach(File::delete);
+		} 
+		catch (IOException e) {
+			throw new JProjectGenException(e);
 		}
 	}
 	
@@ -35,12 +60,35 @@ public class IOUtils {
 	 * 
 	 * @param source
 	 * @param target
+	 * @throws JProjectGenException 
 	 */
-	public void copyFile(String source, String target) {
+	public void copyFile(String source, String target) throws JProjectGenException {
 		try {
 			Files.copy(Paths.get(source), Paths.get(target));
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new JProjectGenException(e);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param resourceFileName
+	 * @param target
+	 * @throws JProjectGenException 
+	 */
+	public static void copyResourceFile(String resourcePath, String resourceName, String target) throws JProjectGenException {
+		
+		String fullPath = resourcePath + "/" + resourceName;
+		InputStream is = IOUtils.class.getResourceAsStream(resourcePath + "/" + resourceName);
+		
+		if(is == null) {
+			throw new JProjectGenException("No resource found for resource name [" + fullPath + "]");
+		}
+		
+		try {
+			Files.copy(is, Paths.get(target + "/" + resourceName), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new JProjectGenException(e);
 		}
 	}
 	
@@ -101,10 +149,10 @@ public class IOUtils {
 	        try {
 	            Files.createDirectories(newDirectory);
 	        }
-	        catch (FileAlreadyExistsException ioException){
+	        catch (FileAlreadyExistsException ioException) {
 	            return FileVisitResult.SKIP_SUBTREE; // skip processing
 	        }
-
+	        
 	        return FileVisitResult.CONTINUE;
 		}
 		
@@ -116,7 +164,7 @@ public class IOUtils {
 	        try {
 	            Files.copy(file, newFile);
 	        }
-	        catch (IOException ex){
+	        catch (IOException ex) {
 	            ex.printStackTrace();
 	        }
 	        

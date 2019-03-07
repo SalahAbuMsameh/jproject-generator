@@ -20,6 +20,7 @@ public class MavenProject extends JProjectDefault {
 	
 	protected List<Dependency> dependencies;
 	protected PomFile pomFile;
+	protected String defaultClassName;
 	
 	/**
 	 * 
@@ -37,6 +38,22 @@ public class MavenProject extends JProjectDefault {
 		return new StringBuilder(properties.getProjectName())
 				.append(MAIN_SRC_WEBAPP)
 				.append("/WEB-INF/")
+				.toString();
+	}
+	
+	/**
+	 * 
+	 * @param subPackage
+	 * @param classPostfix
+	 * @return
+	 */
+	protected String fullQualifiedClassName(String subPackage, String classPostfix) {
+		return new StringBuilder(properties.getPackageName())
+				.append(".")
+				.append(subPackage)
+				.append(".")
+				.append(defaultClassName)
+				.append(classPostfix)
 				.toString();
 	}
 }
